@@ -25,7 +25,7 @@ class _ButtonColorState extends State<ButtonColor> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => updateButton(),
+      onTap: () => Get.offAndToNamed('/home'),
       child: Container(
         color: isGreen ? Colors.green : Colors.red,
         child: Text("Text $textNumber"),

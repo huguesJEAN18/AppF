@@ -132,7 +132,10 @@ class HomePage extends GetView<HomeController> {
                 _scrollController.animateTo(0,
                     duration: const Duration(seconds: 1), curve: Curves.easeInOut);
               },
-              child: const Icon(Icons.arrow_upward),
+              child: const Icon(
+                Icons.arrow_upward,
+                color: Colors.white,
+              ),
               backgroundColor: Colors.blue,
             ),
           ),

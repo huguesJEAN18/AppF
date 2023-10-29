@@ -100,6 +100,7 @@ class HomePage extends GetView<HomeController> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                     ),
@@ -112,6 +113,7 @@ class HomePage extends GetView<HomeController> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                     ),

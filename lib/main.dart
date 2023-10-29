@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/home',
           title: 'Home page',
-          page: () => const HomePage(),
+          page: () =>  HomePage(),
           binding: HomeBindings(),
         ),
         GetPage(

@@ -1,110 +1,250 @@
-
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:fut_app/home_page/home_controller.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 
 class HomePage extends GetView<HomeController> {
-  const HomePage({super.key});
+  HomePage({Key? key}) : super(key: key);
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
-          title: Text("FutApp"),
-          backgroundColor: Colors.blue,
-          elevation: 2,
-          toolbarHeight: 70),
-      body: controller.obx(
-       
-        (state) => InkWell(
-          onTap: () => Get.offAndToNamed('/mypage'),
-          child: ListView.builder(
-            itemCount: controller.players.length,
-            itemBuilder: (context, index) {
-              final player = controller.players[index];
-              
-              return listPlayer(player.name, player.position, player.rating,
-                  player.skillMoves, player.weakFoot);
-            },
-            
-          ),
+        title: Row(
+          children: [
+            InkWell(
+              onTap: () {
+                Get.toNamed('/home');
+              },
+              child: const Text(
+                "FutApp",
+                style: TextStyle(
+                  fontFamily: 'PermanentMarker',
+                  color: Colors.white,
+                  fontSize: 40.0,
+                ),
+              ),
+            ),
+            // Ajouter une barre de recherche ici
+            const Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: 70),
+                child: TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: "Rechercher...",
+                    hintStyle: TextStyle(color: Colors.white),
+                    icon: Icon(Icons.search, color: Colors.white),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-        //onLoading: const CircularProgressIndicator(),
-        onError: (error) => Text("Mon erreur : $error"),
+        backgroundColor: Colors.blue,
+        elevation: 2,
+        toolbarHeight: 70,
       ),
-      
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              const SizedBox(height: 5),
+              Expanded(
+                child: RawScrollbar(
+                  thickness: 6,
+                  radius: const Radius.circular(10),
+                  thumbVisibility: false,
+                  thumbColor: const Color.fromARGB(255, 144, 127, 127),
+                  child: ListView(
+                    controller: _scrollController,
+                    children: [
+                      controller.obx(
+                        (state) => InkWell(
+                          onTap: () => Get.offAndToNamed('/mypage'),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: controller.players.length,
+                            itemBuilder: (context, index) {
+                              final player = controller.players[index];
+
+                              return listPlayer(
+                                player.name,
+                                player.position,
+                                player.rating,
+                                player.skillMoves,
+                                player.weakFoot,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              BottomAppBar(
+                color: Colors.blue,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed('/home');
+                      },
+                      child: const Text(
+                        "Joueurs",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed('/new');
+                      },
+                      child: const Text(
+                        "Nouveau",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 90,
+            right: 10,
+            height: 40,
+            width: 40,
+            child: FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(0,
+                    duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+              },
+              child: const Icon(Icons.arrow_upward),
+              backgroundColor: Colors.blue,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
-Widget listPlayer(String nom, String poste,  note,  skillMoves,  weakFoot, ) {
+Widget listPlayer(
+  String nom,
+  String poste,
+  note,
+  skillMoves,
+  weakFoot,
+) {
   return Card(
     elevation: 4,
-    margin: EdgeInsets.all(9 ),
+    margin: const EdgeInsets.all(5),
+    color: const Color.fromARGB(255, 175, 165, 219),
     child: Container(
-      height: 80.0, 
-      // Hauteur fixe du Container
+      height: 80.0,
       child: Row(
         children: [
           Expanded(
-            //flex: ,
+            flex: 2,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 20.0,
-                  bottom: 20.0,
-                  left: 10,
-                  right: 10), // Ajouter de l'espace autour du conteneur noir
+              padding: const EdgeInsets.only(left: 5, right: 5),
               child: Container(
-                
                 child: Image.network(
-                  
-                 
-                 "https://picsum.photos/250?image=9"// Ajustez ceci selon votre mise en page
+                  "https://i.redd.it/4ixnult45bk51.jpg",
                 ),
               ),
             ),
           ),
           Expanded(
-            flex: 1,
-            child: Text(nom),
+            flex: 6,
+            child: Text(
+              nom,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
           ),
           Expanded(
-            flex: 0,
-            child: Text(poste),
+            flex: 2,
+            child: Text(
+              poste,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
           ),
           Expanded(
-            flex: 4,
-            child: Column(
+            flex: 5,
+            child: Row(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 5),
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: const Color.fromARGB(255, 222, 197, 9),
                     border: Border.all(
                       color: const Color.fromARGB(255, 222, 197, 9),
                     ),
                   ),
                   child: Text(
                     "$note",
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 1,
+                  width: 20,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment
-                      .center, // Centrer les éléments horizontalement
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("$skillMoves"),
-                    Icon(Icons.star),
-                    Text("$weakFoot"),
-                    Icon(Icons.star),
+                    Transform.translate(
+                      offset: const Offset(0, 2),
+                      child: Text(
+                        "$skillMoves",
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 255, 215, 0),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.star,
+                      color: Color.fromARGB(255, 255, 215, 0),
+                    ),
+                    const SizedBox(width: 5),
+                    Transform.translate(
+                      offset: const Offset(0, 2),
+                      child: Text(
+                        "$weakFoot",
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 255, 215, 0),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.star,
+                      color: Color.fromARGB(255, 255, 215, 0),
+                    ),
                   ],
                 ),
               ],

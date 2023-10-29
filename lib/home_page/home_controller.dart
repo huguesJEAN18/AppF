@@ -3,12 +3,13 @@ import 'package:fut_app/model/player.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
+import 'package:fut_app/model/config.dart';
 import 'dart:typed_data';
 
 class HomeController extends GetxController with StateMixin {
   int championId = 0;
   var name, note, gp, pm, poste, i;
-  final int maxPages = 18;
+  final int maxPages = 10;
     late Uint8List imageData; 
 
   List<Player> players = [];
@@ -34,7 +35,7 @@ class HomeController extends GetxController with StateMixin {
         Uri.parse(apiUrl),
         headers: {
           'accept': 'application/json',
-          'X-AUTH-TOKEN': 'd2fca0bd-96d1-4f2a-b7c5-3368a9591a8c',
+          'X-AUTH-TOKEN': apiToken,
         },
       );
 
@@ -48,7 +49,7 @@ class HomeController extends GetxController with StateMixin {
     );
       print('Page $i:');
       print(response);
-       print('Response status: ${response.statusCode}');
+      print('Response status: ${response.statusCode}');
       print('Response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
@@ -68,14 +69,14 @@ class HomeController extends GetxController with StateMixin {
       imageData = response.bodyBytes;
       change(null, status: RxStatus.success());
 
-        final player = Player(
-      name: name,
-      position: poste,
-      skillMoves: gp,
-      weakFoot: pm,
-      rating: note,
+      final player = Player(
+        name: name,
+        position: poste,
+        skillMoves: gp,
+        weakFoot: pm,
+        rating: note,
      
-    );
+      );
     
 
     players.add(player); 

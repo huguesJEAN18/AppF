@@ -16,12 +16,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'FutApp',
       getPages: [
         GetPage(
           name: '/home',
           title: 'Home page',
-          page: () => const HomePage(),
+          page: () =>  HomePage(),
           binding: HomeBindings(),
         ),
         GetPage(

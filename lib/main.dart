@@ -3,6 +3,9 @@ import 'package:fut_app/home_page/home_bindings.dart';
 import 'package:fut_app/home_page/home_page.dart';
 import 'package:fut_app/my_page/my_page.dart';
 import 'package:fut_app/my_page/my_page_bindings.dart';
+import 'package:fut_app/third_page/raretyView.dart';
+import 'package:fut_app/third_page/rarety_binddings.dart';
+import 'package:fut_app/third_page/rarety_controller.dart';
 import 'package:get/get.dart';
 
 
@@ -29,6 +32,12 @@ class MyApp extends StatelessWidget {
           title: 'My page',
           page: () => const MyPage(),
           binding: MyPageBindings(),
+        ),
+          GetPage(
+          name: '/rarity',
+          title: 'Rareté',
+          page: () => RarityPage(), // Utilisez la page qui affiche la liste de rarités
+          binding: RaretyBindings(), // Lier le contrôleur à la page
         ),
       ],
       theme: ThemeData(

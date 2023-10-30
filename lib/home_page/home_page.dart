@@ -54,35 +54,45 @@ class HomePage extends GetView<HomeController> {
               const SizedBox(height: 5),
               Expanded(
                 child: RawScrollbar(
-                  thickness: 6,
+                  
+                            
+                  controller: _scrollController,
                   radius: const Radius.circular(10),
                   thumbVisibility: false,
                   thumbColor: const Color.fromARGB(255, 144, 127, 127),
-                  child: ListView(
-                    controller: _scrollController,
-                    children: [
-                      controller.obx(
-                        (state) => InkWell(
-                          onTap: () => Get.offAndToNamed('/mypage'),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: controller.players.length,
-                            itemBuilder: (context, index) {
-                              final player = controller.players[index];
+                  child: controller.obx((state) => 
+                    ListView.builder(
+                      
+                              shrinkWrap: true,
+            itemCount: controller.players.length,
+            itemBuilder: (context, index) {
+              final player = controller.players[index];
 
-                              return listPlayer(
-                                player.name,
-                                player.position,
-                                player.rating,
-                                player.skillMoves,
-                                player.weakFoot,
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+              return InkWell(
+                child: listPlayer(player.name, player.position, player.rating,
+                    player.skillMoves, player.weakFoot),
+                onTap: () {
+                  Get.offAndToNamed('/mypage', arguments: {
+                    'name': player.name,
+                    'poste': player.position,
+                    'rating': player.rating,
+                    'skillMoves': player.skillMoves,
+                    'weakFoot': player.weakFoot,
+                    'attackWorkRate':player.attackWorkRate,
+                    'defenseWorkRate':player.defenseWorkRate,
+                    'defending':player.defending,
+                    'foot':player.foot,
+                    'dribbling':player.dribbling,
+                    'totalStatsInGame':player.totalStatsInGame,
+                    'pace':player.pace,
+                    'passing':player.passing,
+                    'physicality':player.physicality
+                   
+                  });
+                },
+              );
+            },
+          ),
                   ),
                 ),
               ),
@@ -95,26 +105,37 @@ class HomePage extends GetView<HomeController> {
                       onTap: () {
                         Get.toNamed('/home');
                       },
-                      child: const Text(
-                        "Joueurs",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
-                        ),
+                      child: Column(
+                        children: [
+                          Icon(Icons.home),
+                          const Text(
+                            "Home",
+                            
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     InkWell(
                       onTap: () {
-                        Get.toNamed('/new');
+                        Get.toNamed('/rarity');
                       },
-                      child: const Text(
-                        "Nouveau",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
-                        ),
+                      child: Column(
+                        children: [
+                          Icon(Icons.star),
+                          const Text(
+                            "Rarety",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -154,7 +175,7 @@ Widget listPlayer(
 ) {
   return Card(
     elevation: 4,
-    margin: const EdgeInsets.all(5),
+    margin: const EdgeInsets.all(8),
     color: const Color.fromARGB(255, 175, 165, 219),
     child: Container(
       height: 80.0,
@@ -192,7 +213,7 @@ Widget listPlayer(
             ),
           ),
           Expanded(
-            flex: 5,
+            flex: 7,
             child: Row(
               children: [
                 Container(

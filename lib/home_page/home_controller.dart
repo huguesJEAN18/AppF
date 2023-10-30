@@ -1,15 +1,16 @@
 import 'dart:convert';
+import 'package:fut_app/model/config.dart';
 import 'package:fut_app/model/player.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
-import 'package:fut_app/model/config.dart';
 import 'dart:typed_data';
 
 class HomeController extends GetxController with StateMixin {
   int championId = 0;
-  var name, note, gp, pm, poste, i;
-  final int maxPages = 10;
+   var name, note, gp, pm, poste, i,weakFoot,skillMoves,physicality,defending,dribbling,passing,shooting,totalStatsInGame
+   ,defenseWorkRate,attackWorkRate,pace,foot, id;
+  final int maxPages = 78;
     late Uint8List imageData; 
 
   List<Player> players = [];
@@ -39,17 +40,17 @@ class HomeController extends GetxController with StateMixin {
         },
       );
 
-       String apiUrlImage = 'https://futdb.app/api/players/$i/image'; // Remplacez par l'URL de votre API
+       String apiUrlImage = 'https://futdb.app/api/players/$i/image';
       var responseImage = await http.get(
       Uri.parse(apiUrlImage),
       headers: {
-        'accept': 'image/png', // Assurez-vous d'utiliser le bon type de contenu ici
-        'X-AUTH-TOKEN': 'd2fca0bd-96d1-4f2a-b7c5-3368a9591a8c',
+        'accept': 'image/png',
+        'X-AUTH-TOKEN': apiToken,
       },
     );
       print('Page $i:');
       print(response);
-      print('Response status: ${response.statusCode}');
+       print('Response status: ${response.statusCode}');
       print('Response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
@@ -59,24 +60,44 @@ class HomeController extends GetxController with StateMixin {
         gp = jsonResponse['player']['skillMoves'];
         pm = jsonResponse['player']['weakFoot'];
         note = jsonResponse['player']['rating'];
+        attackWorkRate = jsonResponse['player']['attackWorkRate'];
+        defenseWorkRate= jsonResponse['player']['defenseWorkRate'];
+        foot= jsonResponse['player']['foot'];
+        totalStatsInGame= jsonResponse['player']['totalStatsInGame'];
+        pace= jsonResponse['player']['pace'];
+        shooting = jsonResponse['player']['shooting'];
+        passing = jsonResponse['player']['passing'];
+        dribbling = jsonResponse['player']['dribbling'];
+        defending = jsonResponse['player']['defending'];
+        physicality = jsonResponse['player']['physicality'];
         print('Nom du joueur : $name');
         print('Position : $poste');
         print('Skill Moves : $gp');
         print('Weak Foot : $pm');
         print('Note : $note');
 
-          // Convertissez la réponse en données d'image (Uint8List)
+          
       imageData = response.bodyBytes;
       change(null, status: RxStatus.success());
 
-      final player = Player(
-        name: name,
-        position: poste,
-        skillMoves: gp,
-        weakFoot: pm,
-        rating: note,
-     
-      );
+        final player = Player(
+      name: name,
+      position: poste,
+      skillMoves: gp,
+      weakFoot: pm,
+      rating: note,
+     attackWorkRate:attackWorkRate,
+      defenseWorkRate:defenseWorkRate,
+      foot:foot,
+      totalStatsInGame:totalStatsInGame,
+      pace:pace,
+      shooting:shooting,
+      passing:passing,
+      dribbling:dribbling,
+      defending:defending,
+      physicality:physicality, 
+      
+    );
     
 
     players.add(player); 
